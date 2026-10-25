@@ -13,7 +13,7 @@ class Engine {
 public:
   using Stereo = std::array<std::vector<float>, 2>;
   std::array<Stereo, 4> tape;
-  Stereo sample, clipboard;
+  Stereo sample, clipboard, drumKit;
   DeviceSettings device;
   float modulationCC=0, modulationValue=0;
   std::array<bool,128> heldNotes{};
@@ -23,7 +23,7 @@ public:
   std::array<bool, 128> sequence{};
   std::array<int, 128> seqNotes{
       {60, 62, 64, 67, 60, 62, 64, 69, 60, 62, 64, 67, 60, 62, 59, 55}};
-  std::array<std::array<bool, 128>, 4> drumSequence{};
+  std::array<std::array<bool, 128>, 8> drumSequence{};
   bool playing = false, recording = false, monitor = true, seqEnabled = false,
        drumSeqEnabled = false;
   int armed = 0, sound = 0, loopStart = 0, loopEnd = 0, selectStart = 0,
@@ -141,7 +141,9 @@ public:
       v.releasing = true;
     }
   }
+  void stopDrums(){for(auto& drum:drums)drum.active=false;}
   void triggerDrum(int index, float velocity = 1) {
+    if(device.drumMode>1.5f&&index==2)drums[6].active=false;
     auto &d = drums[size_t(std::clamp(index, 0, 7))];
     d.active = true;
     d.age = 0;
@@ -258,12 +260,24 @@ public:
       if (kind == 3)
         x = noise() * float(std::exp(-t * 17)) *
             (std::fmod(t, .018) < .009 ? 1.f : .35f);
-      if(device.drumMode>.5f){int frames=int(std::min(sample[0].size(),sample[1].size()));int start=int(k)*frames/8,end=int(k+1)*frames/8;if(end-start<2){d.active=false;continue;}int n=start+int(d.samplePos);if(n>=end-1){d.active=false;continue;}float f=float(d.samplePos-std::floor(d.samplePos));x=(sample[0][size_t(n)]*(1-f)+sample[0][size_t(n+1)]*f+sample[1][size_t(n)]*(1-f)+sample[1][size_t(n+1)]*f)*.5f;d.samplePos+=std::pow(2.,device.drumPitch/12.);}
+      if(device.drumMode>.5f){
+        const auto& audio=device.drumMode>1.5f?drumKit:sample;
+        int frames=int(std::min(audio[0].size(),audio[1].size()));
+        int start=int(k)*frames/8,end=int(k+1)*frames/8;
+        if(end-start<2){d.active=false;continue;}
+        int n=start+int(d.samplePos);if(n>=end-1){d.active=false;continue;}
+        float f=float(d.samplePos-std::floor(d.samplePos));
+        float l=audio[0][size_t(n)]*(1-f)+audio[0][size_t(n+1)]*f;
+        float r=audio[1][size_t(n)]*(1-f)+audio[1][size_t(n+1)]*f;
+        if(device.drumMode>1.5f){x=0;sourceL+=l*d.velocity*drumGain*.5f;sourceR+=r*d.velocity*drumGain*.5f;}
+        else x=(l+r)*.5f;
+        d.samplePos+=std::pow(2.,device.drumPitch/12.);
+      }
       else x=std::tanh(x*(.5f+device.drumColour*1.5f)+float(std::sin(2*pi*400*variant*t))*x*device.drumShape);
       sourceL += x * d.velocity * drumGain * .5f;
       sourceR += x * d.velocity * drumGain * .5f;
       d.age++;
-      if (t > .9)
+      if (device.drumMode<.5f && t > .9)
         d.active = false;
     }
     sourceL += std::isfinite(inL) ? inL : 0;
@@ -493,7 +507,7 @@ private:
         else if(sequence[size_t(step)]||mode==4)note=seqNotes[size_t(step)];
         if(note>=0){seqLastNote=quantize(note);triggerVoice(seqLastNote,.8f);}
       }
-      if(drumSeqEnabled)for(int d=0;d<4;d++)if(drumSequence[size_t(d)][size_t(step)])triggerDrum(d,.85f);
+      if(drumSeqEnabled)for(int d=0;d<8;d++)if(drumSequence[size_t(d)][size_t(step)])triggerDrum(d,.85f);
       double base=rate*60/(std::clamp(bpm,40.,240.)*4);
       seqCounter+=base*(seqTick%2==0?1+swing:1-swing);gateCounter=seqCounter*device.seqGate;seqTick=(seqTick+1)%16384;
     }seqCounter-=1;

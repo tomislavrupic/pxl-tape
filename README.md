@@ -46,3 +46,9 @@ This is an original PXL implementation inspired by a tape workstation workflow. 
 ## Factory Drums
 
 Eight more local Zogg one-shot sampler presets: Kick / Circuit, Kick / Backroom, Snare / Berg, Clap / Copper, Hat / Closed, Hat / Open Dust, Cymbal / Cinch, and Perc / Molecule. All are under one second; delay and reverb start off. Select from Sound Presets, play from the instrument keys at C4 for original pitch, or record onto tape. These presets use the sampler; they do not replace the synthesized drum pads. The same local Zogg bridge and source fingerprint checks apply. Raw library audio is excluded from public downloads.
+
+## Eight-pad factory kit (0.7)
+
+On DRUMS, choose LOAD ZOGG KIT. The eight curated drum recordings load together with fingerprint validation before replacing the kit. Pad order: Circuit Kick, Berg Snare, Closed Hat, Copper Clap, Backroom Kick, Molecule Percussion, Open Hat, Cinch Cymbal. MIDI channel10 notes36–43 use the same order. Closed Hat chokes Open Hat. All eight pads have sequencer lanes across the existing eight banks. Enable DRUMS on SEQUENCE and Play; Record prints to the armed tape track.
+
+The kit has independent stereo sample memory, so changing or recalling a melodic sound leaves the kit and drum settings intact. Loading a kit preserves melody timing/held notes, tape, transport and patterns. Existing D-BOX synth and melodic sample slices remain selectable. Save the project to embed the kit for offline recall. New projects use format3 and need PXL Tape0.7 or newer; formats1/2 still load with an empty kit and four extra empty drum lanes. Public downloads contain metadata only; initial factory loading requires the local Zogg bridge.

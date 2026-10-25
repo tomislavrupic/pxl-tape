@@ -28,7 +28,7 @@
  X(sampleEnd,"Sample end",.01,1,1,0) \
  X(sampleLoop,"Sample loop",0,1,0,1) \
  X(sampleReverse,"Sample reverse",0,1,0,1) \
- X(drumMode,"Drum synth / slices",0,1,0,1) \
+ X(drumMode,"Drum synth / slices / kit",0,2,0,1) \
  X(drumPitch,"Drum pitch",-24,24,0,0) \
  X(drumDecay,"Drum decay",.1,3,1,0) \
  X(drumColour,"Drum colour",0,1,.5,0) \

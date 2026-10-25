@@ -46,7 +46,7 @@ class MCP:
        if 'error' in r:raise RuntimeError(str(r['error']))
        return r.get('result',{})
      raise RuntimeError('Zogg timed out. Check that your sample drives are connected.')
-    send('initialize',{'protocolVersion':'2024-11-05','capabilities':{},'clientInfo':{'name':'pxl-tape','version':'0.6.1'}});send('notifications/initialized',{},True)
+    send('initialize',{'protocolVersion':'2024-11-05','capabilities':{},'clientInfo':{'name':'pxl-tape','version':'0.7.0'}});send('notifications/initialized',{},True)
     result=send('tools/call',{'name':name,'arguments':args})
     for block in result.get('content',[]):
      if block.get('type')=='text':

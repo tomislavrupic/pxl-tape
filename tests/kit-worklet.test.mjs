@@ -1,0 +1,20 @@
+import {readFileSync} from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+import {instantiate} from '../dist/wasm.js';import {PARAMS,createProject} from '../dist/project.js';
+const module=await WebAssembly.compile(readFileSync(new URL('../dist/engine.wasm',import.meta.url)));
+const source=readFileSync(new URL('../dist/audio-worklet.js',import.meta.url),'utf8').replace(/^import .*?;\n/,'');
+let C;const messages=[];class Processor{constructor(){this.port={postMessage:m=>messages.push(m)};}}
+vm.runInNewContext(source,{instantiate,AudioWorkletProcessor:Processor,registerProcessor:(_n,c)=>C=c,sampleRate:48000,Float32Array,Array,Math,Error,Number});
+const p=new C({processorOptions:{module}});PARAMS.forEach((d,i)=>p.message({type:'param',index:i,value:d[4]}));
+const set=(id,value)=>p.message({type:'param',index:PARAMS.findIndex(d=>d[0]===id),value});
+const kit=[new Float32Array(800).fill(.2),new Float32Array(800).fill(-.1)];
+p.message({type:'import',kind:'sample',id:1,audio:[Float32Array.of(.25,.5),Float32Array.of(.1,.3)]});p.message({type:'action',action:0});
+p.message({type:'load-kit',id:2,audio:kit});set('drumMode',2);set('delay',0);set('reverb',0);
+assert.equal(new Float32Array(p.e.memory.buffer,p.e.tape_status(),16)[1],1,'kit install preserves transport');assert.equal(p.e.tape_sample_size(-1),2,'kit preserves sampler');
+p.message({type:'load-kit',id:3,audio:[Float32Array.of(NaN),Float32Array.of(0)]});assert(messages.some(m=>m.type==='error'&&m.id===3));assert.equal(p.e.tape_kit_size(-1),800,'invalid kit preserves loaded kit');
+for(let row=1;row<=8;row++)for(let step=0;step<128;step++)p.message({type:'step',row,step,on:false});
+p.message({type:'step',row:8,step:112,on:true});set('seqBank',7);set('seqLength',16);set('drumSequence',1);p.message({type:'action',action:2});
+const output=[[new Float32Array(128),new Float32Array(128)]];p.process([],output);assert(output[0][0].some(v=>v>.01),'WASM sequencer triggers pad8');assert(output[0][1].some(v=>v<-.01),'kit stays stereo');
+const stepBefore=new Float32Array(p.e.memory.buffer,p.e.tape_status(),16)[7];p.message({type:'load-kit',id:22,audio:kit});assert.equal(new Float32Array(p.e.memory.buffer,p.e.tape_status(),16)[7],stepBefore,'kit load preserves sequencer phase');
+p.message({type:'snapshot',id:4});const saved=messages.findLast(m=>m.id===4).result;for(let c=0;c<2;c++)assert.deepEqual(saved.drumKit[c],kit[c]);
+const project=createProject();project.drumKit=kit;project.params.drumMode=2;p.message({type:'restore',id:5,project:{...project,params:PARAMS.map(([id])=>project.params[id])}});assert(!messages.some(m=>m.type==='error'&&m.id===5));assert.equal(p.e.tape_kit_size(-1),800);
+console.log('PASS: worklet kit install atomicity, transport/sampler isolation, stereo pad8 sequencing and snapshot/restore');

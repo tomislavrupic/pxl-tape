@@ -39,14 +39,13 @@ public:
   std::array<float, 256> scope{};
   size_t scopeHead = 0;
 
-  void prepare(double sr, double seconds = 60) {
+  void prepare(double sr, double seconds = 360) {
     rate = std::clamp(sr, 1000.0, 192000.0);
-    capacity = std::max(2, int(rate * std::clamp(seconds, 1.0, 60.0)));
+    capacity = std::max(2, int(rate * std::clamp(seconds, 1.0, 360.0)));
     for (auto &t : tape)
       for (auto &c : t)
-        c.assign(size_t(capacity), 0);
-    for (auto &c : undoTape)
-      c.assign(size_t(capacity), 0);
+        c.assign(size_t(std::min(capacity,int(rate*16))), 0);
+    for (auto &c : undoTape)c.clear();
     delay[0].assign(size_t(rate * 2 + 2), 0);
     delay[1].assign(size_t(rate * 2 + 2), 0);
     const double lengths[] = {.0297, .0371, .0411, .0437};
@@ -63,6 +62,8 @@ public:
     for(int i=16;i<128;i++)seqNotes[size_t(i)]=60;
     panic();
   }
+  void reserveTrack(int track,int frames){if(track<0||track>3)return;frames=std::clamp(frames,0,capacity);for(auto& c:tape[size_t(track)])if(int(c.size())<frames)c.resize(size_t(frames),0);}
+  float readTape(int track,int channel,int frame)const{if(track<0||track>3||channel<0||channel>1||frame<0)return 0;const auto& data=tape[size_t(track)][size_t(channel)];return size_t(frame)<data.size()?data[size_t(frame)]:0.f;}
   void panic() {
     for (auto &v : voices)
       v.active = false;
@@ -278,16 +279,16 @@ public:
     if (playing) {
       for (int t = 0; t < 4; t++)
         if (!trackMute[size_t(t)] && (!anySolo || trackSolo[size_t(t)])) {
-          float l = tape[size_t(t)][0][size_t(index)] * (1 - frac) +
-                    tape[size_t(t)][0][size_t(next)] * frac;
-          float r = tape[size_t(t)][1][size_t(index)] * (1 - frac) +
-                    tape[size_t(t)][1][size_t(next)] * frac;
+          float l = readTape(t,0,index) * (1 - frac) +
+                    readTape(t,0,next) * frac;
+          float r = readTape(t,1,index) * (1 - frac) +
+                    readTape(t,1,next) * frac;
           auto g = gains(t);
           outL += l * g.first;
           outR += r * g.second;
         }
       if (recording && std::abs(speed - 1) < .000001 && armed >= 0 &&
-          armed < 4) {
+          armed < 4 && size_t(index)<tape[size_t(armed)][0].size()) {
         auto &t = tape[size_t(armed)];
         t[0][size_t(index)] =
             std::clamp(t[0][size_t(index)] + sourceL, -4.f, 4.f);
@@ -322,10 +323,7 @@ public:
       return;
     undoTrack = track;
     undoUsed = used[size_t(track)];
-    for (int c = 0; c < 2; c++)
-      std::copy(tape[size_t(track)][size_t(c)].begin(),
-                tape[size_t(track)][size_t(c)].end(),
-                undoTape[size_t(c)].begin());
+    for(int c=0;c<2;c++)undoTape[size_t(c)].assign(tape[size_t(track)][size_t(c)].begin(),tape[size_t(track)][size_t(c)].begin()+std::min(size_t(undoUsed),tape[size_t(track)][size_t(c)].size()));
   }
   void clearUndo() {
     undoTrack = -1;
@@ -338,6 +336,7 @@ public:
     auto &t = tape[size_t(undoTrack)];
     for (int c = 0; c < 2; c++)
       std::swap(t[size_t(c)], undoTape[size_t(c)]);
+    reserveTrack(undoTrack,std::min(capacity,int(rate*16)));
     std::swap(used[size_t(undoTrack)], undoUsed);
     return true;
   }
@@ -345,10 +344,7 @@ public:
     if (track < 0 || track > 3)
       return;
     auto s = selection();
-    for (int c = 0; c < 2; c++)
-      clipboard[size_t(c)].assign(
-          tape[size_t(track)][size_t(c)].begin() + s.first,
-          tape[size_t(track)][size_t(c)].begin() + s.second);
+    for(int c=0;c<2;c++){clipboard[size_t(c)].assign(size_t(s.second-s.first),0);for(int i=s.first;i<s.second;i++)clipboard[size_t(c)][size_t(i-s.first)]=readTape(track,c,i);}
   }
   void cut(int track) {
     copy(track);
@@ -359,8 +355,7 @@ public:
       return;
     checkpoint(track);
     auto s = selection();
-    for (auto &c : tape[size_t(track)])
-      std::fill(c.begin() + s.first, c.begin() + s.second, 0);
+    for(auto& c:tape[size_t(track)])if(size_t(s.first)<c.size())std::fill(c.begin()+s.first,c.begin()+std::min(size_t(s.second),c.size()),0);
     if (s.first == 0 && s.second >= used[size_t(track)])
       used[size_t(track)] = 0;
   }
@@ -370,6 +365,7 @@ public:
     checkpoint(track);
     int dest = std::clamp(int(position), loopStart, loopEnd - 1);
     int n = std::min(int(clipboard[0].size()), loopEnd - dest);
+    reserveTrack(track,dest+n);
     for (int c = 0; c < 2; c++)
       std::copy_n(clipboard[size_t(c)].begin(), n,
                   tape[size_t(track)][size_t(c)].begin() + dest);
@@ -379,13 +375,13 @@ public:
     if (track < 0 || track > 3)
       return;
     checkpoint(track);
-    auto s = selection();
+    auto s = selection();reserveTrack(track,s.second);
     for (auto &c : tape[size_t(track)])
       std::reverse(c.begin() + s.first, c.begin() + s.second);
     used[size_t(track)] = std::max(used[size_t(track)], s.second);
   }
   void bounce() {
-    checkpoint(3);
+    checkpoint(3);reserveTrack(3,loopEnd);
     bool solo = std::any_of(trackSolo.begin(), trackSolo.end(),
                             [](bool x) { return x; });
     for (int i = loopStart; i < loopEnd; i++) {
@@ -393,8 +389,8 @@ public:
       for (int t = 0; t < 4; t++)
         if (!trackMute[size_t(t)] && (!solo || trackSolo[size_t(t)])) {
           auto g = gains(t);
-          l += tape[size_t(t)][0][size_t(i)] * g.first;
-          r += tape[size_t(t)][1][size_t(i)] * g.second;
+          l += readTape(t,0,i) * g.first;
+          r += readTape(t,1,i) * g.second;
         }
       tape[3][0][size_t(i)] = std::clamp(l, -4.f, 4.f);
       tape[3][1][size_t(i)] = std::clamp(r, -4.f, 4.f);

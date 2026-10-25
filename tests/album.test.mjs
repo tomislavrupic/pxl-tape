@@ -1,0 +1,9 @@
+import assert from'node:assert/strict';import{albumHeader,albumPCM}from'../dist/album.js';const h=albumHeader(48000,3),v=new DataView(h.buffer);assert.equal(v.getUint32(40,true),18);assert.equal(v.getUint32(24,true),48000);assert.equal(v.getUint16(22,true),2);let pcm=albumPCM(Float32Array.of(1,-1,.25,-.25,NaN,Infinity));assert.deepEqual([...pcm.slice(0,6)],[255,255,127,1,0,128]);assert.deepEqual([...pcm.slice(12)],[0,0,0,0,0,0]);console.log('PASS: stereo24-bit album WAV header, clipping and non-finite protection');
+const {AlbumController}=await import('../dist/album.js');
+function mock(fail){let calls=[];const c=new AlbumController({enable:async()=>{},request:async type=>{calls.push(type);if(type===fail)throw Error('engine offline');return {frames:0};},send:()=>{},rate:()=>48000,notice:()=>{},download:()=>{},change:()=>{}});c.store={begin:async side=>({side}),finish:async()=>{},current:async()=>null};return {c,calls};}
+let {c,calls}=mock();await Promise.all([c.start('A'),c.start('B')]);assert.equal(calls.filter(v=>v==='album-start').length,1);assert.equal(c.active.side,'A');await c.stop();
+({c}=mock('album-start'));await assert.rejects(c.start('A'));assert.equal(c.active,null);assert.equal(c.starting,false);assert.equal(c.recording,false);
+({c}=mock('album-stop'));await c.start('A');await c.stop();assert.equal(c.active,null);assert.equal(c.stopping,null);assert.equal(c.recording,false);
+console.log('PASS: concurrent album starts serialize and engine failures restore usable controls');
+
+({c}=mock());let started,ack;const entered=new Promise(r=>started=r),release=new Promise(r=>ack=r);c.request=async type=>{if(type==='album-start'){started();await release;}return {frames:0};};const startup=c.start('A');await entered;await c.stop();ack();await startup;assert.equal(c.active,null);assert.equal(c.recording,false);console.log('PASS: stopped startup cannot restore stale recording state');

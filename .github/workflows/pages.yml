@@ -27,6 +27,8 @@ jobs:
           node-version: '24'
       - name: Test shared engine, worklet and projects
         run: npm test
+      - name: Test local Zogg bridge boundaries
+        run: python3 -m unittest discover -s tests -p 'test_zogg_bridge.py'
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -1,0 +1,9 @@
+# Zogg sample browser
+
+User intent: search their Zogg library and load samples straight into sampler or tape. Preserve tape-machine graphics (web graphics.js reels and native drawReels unchanged). Extend both existing web and native plugin.
+
+Architecture call: a loopback-only bridge wraps the existing configured Zogg stdio MCP, retaining canonical SQLite and unchanged source files. It serves the current web UI locally to avoid public-page local-network restrictions. Public Pages offers a local browser connection link; sample contents never become public assets. Native browser connects to the same bridge using a private local discovery file. Alternative of copying a static sample index into Pages would go stale and expose library metadata; direct database access would duplicate Zogg logic and decoder behavior.
+
+UI: persistent Samples entry plus shortcuts from Tape/Sound; filename/metadata search, mounted-library and maximum-duration filters, paginated list with filename, duration and availability. Selected sound shows waveform and trim offset/duration; explicit preview/stop; Load Sampler (30s maximum) and Load Tape to selected track (300s per transfer, Zogg derivative bound, tape remains6min). Existing native tape import writes at the playhead of the selected track and supports undo; label replacement explicitly. Loads stop transport as existing imports do. Capture selected asset, trim and track before async work; disable actions during load. Preview clears on selection/change/close.
+
+Bridge: listen127.0.0.1 only, per-run token header; reject unexpected Host and Origin and all unauthenticated API calls; no arbitrary paths/SQL/tool names. Expose status/search/inspect/preview/prepare and generated WAV via opaque handles, not source-file paths. Bounded requests/trim; serialized MCP calls off audio thread; process timeout/error recovery. Discovery session file mode600. Original media readonly. No changes to Zogg repository.

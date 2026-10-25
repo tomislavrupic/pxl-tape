@@ -1,4 +1,4 @@
-import {instantiate} from './wasm.js?v=0.4.0';
+import {instantiate} from './wasm.js?v=0.5.0';
 class TapeWorklet extends AudioWorkletProcessor {
  constructor(options){super();this.e=instantiate(options.processorOptions.module);if(!this.e.tape_init(sampleRate))throw Error('Unsupported audio rate');this.values=new Float32Array(this.e.tape_parameter_count());this.elapsed=0;this.albumPool=Array.from({length:8},()=>new Float32Array(8192));this.pool=[new Float32Array(1552),new Float32Array(1552),new Float32Array(1552)];this.port.onmessage=event=>this.message(event.data);this.port.postMessage({type:'ready',rate:sampleRate});}
  views(){if(this.memory!==this.e.memory.buffer){this.memory=this.e.memory.buffer;this.input=new Float32Array(this.memory,this.e.tape_input(),256);this.output=new Float32Array(this.memory,this.e.tape_output(),256);}}

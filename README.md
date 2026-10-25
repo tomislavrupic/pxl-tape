@@ -19,6 +19,14 @@ Album sides A/B capture live post-master output independently of tape transport 
 
 SAVE SOUND / OPEN SOUND exchange portable `.pxlsound` files with your sample while preserving tape. Device controls are grouped under Sound, Drums, Sequence and Mix. [Device guide](docs/DEVICE-GUIDE.md).
 
+## Zogg sample browser
+
+Open SAMPLES or ZOGG SAMPLES from Tape/Sound. Download the Zogg bridge ZIP from that page, unzip, then open Start Zogg.command. Requires Python3.11+ and your existing configured Zogg MCP (Codex configuration, or ZOGG_MCP_COMMAND/ZOGG_MCP_ARGS). The launcher opens the connected localhost workstation; keep its Terminal window open. Native0.5 uses the same running bridge from its SAMPLES button. No changes to Zogg's app or original audio.
+
+Search filename/metadata, choose a mounted library and duration limit, sort and page through results. Select a row, set start/length, Preview to audition and inspect its waveform, then Load Sampler or choose a tape track and Load Tape. Sampler loads up to30seconds; tape loads up to300seconds per excerpt at its current playhead, overwriting only that region with Undo available. Loading stops transport. Native preview is excluded from tape and album recording; browser preview uses a separate audio element.
+
+The loopback bridge serves this same UI locally. Public Pages provides the connection/download page; it does not upload your catalogue or access drives directly. Pairing uses a per-run connection link and an HttpOnly SameSiteStrict cookie. Native discovery is a private mode600 Application Support/Pixel Records/PXL Tape/ZoggBridge.json. Only approved API calls and generated audio handles are served; no arbitrary source paths. A disconnected drive/source drift yields an error. Album browser storage is per-origin, so localhost and GitHub Pages album takes are separate; keep portable WAV/project copies when switching.
+
 ## Development
 
 No npm dependencies. `npm test` runs engine, native-project codec and worklet tests, including native PCM parity, corruption rejection and worklet output at 44.1/48/96 kHz. The native-generated fixture and native PCM oracle are committed so CI can test the prebuilt engine without a C++ toolchain.

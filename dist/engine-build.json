@@ -1,0 +1,6 @@
+{
+  "engine": "PXL Tape 0.2.0",
+  "source_sha256": "fa71afb2d073f1404bbf1d8909ffdea5df15846d30bfd41730422d7f8fa03512",
+  "bridge_sha256": "422218338e3f6433b3d5f121586777a14f6036e46a0c996f04e445fce81bc113",
+  "wasm_sha256": "0624dc3b845b846180445d39c47a9fdff8f67abb0a2e08dc09ee65ae9b091746"
+}

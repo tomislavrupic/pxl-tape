@@ -1,0 +1,1 @@
+export function instantiate(module){let instance;const imports={wasi_snapshot_preview1:{clock_time_get:(_id,_precision,ptr)=>{new DataView(instance.exports.memory.buffer).setBigUint64(ptr,0n,true);return 0;},fd_close:()=>0,fd_seek:()=>52,fd_write:()=>52}};instance=new WebAssembly.Instance(module,imports);instance.exports.__wasm_call_ctors();return instance.exports;}

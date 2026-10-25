@@ -42,3 +42,7 @@ No npm dependencies. `npm test` runs engine, native-project codec and worklet te
 GitHub Actions tests the committed engine and deploys `dist` to GitHub Pages. Browser smoke checks covered audio initialization, demo playback, keys, drums, sequencer, mix page, recording, clear/undo, save and responsive themes. Native JUCE accepted a browser-written project. Native plugin installation, AU registration, hardware MIDI/microphone and cross-browser listening acceptance are separate checks.
 
 This is an original PXL implementation inspired by a tape workstation workflow. It does not redistribute OP-1 firmware and is not affiliated with Teenage Engineering or Hundekraft.
+
+## Factory Drums
+
+Eight more local Zogg one-shot sampler presets: Kick / Circuit, Kick / Backroom, Snare / Berg, Clap / Copper, Hat / Closed, Hat / Open Dust, Cymbal / Cinch, and Perc / Molecule. All are under one second; delay and reverb start off. Select from Sound Presets, play from the instrument keys at C4 for original pitch, or record onto tape. These presets use the sampler; they do not replace the synthesized drum pads. The same local Zogg bridge and source fingerprint checks apply. Raw library audio is excluded from public downloads.

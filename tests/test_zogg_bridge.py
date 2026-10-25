@@ -26,7 +26,7 @@ class TestBridge(unittest.TestCase):
   result=json.load(self.request('/api/preview',{'asset_id':7,'start':0,'duration':1}));self.assertNotIn('private',json.dumps(result));self.assertEqual(self.request(result['audio'],None).read(),b'RIFFtest')
   with self.assertRaises(urllib.error.HTTPError):self.request('/audio/../../etc/passwd',None)
  def test_static_factory_catalogue(self):
-  with urllib.request.urlopen(self.url+'/factory-sounds.json?v=0.6.0') as response:self.assertEqual(len(json.load(response)),8)
+  with urllib.request.urlopen(self.url+'/factory-sounds.json?v=0.6.1') as response:self.assertEqual(len(json.load(response)),16)
  def test_factory_identity_guard(self):
   with self.assertRaises(urllib.error.HTTPError) as e:self.request('/api/prepare',{'asset_id':7,'duration':1,'expected_fingerprint':'b'*64})
   self.assertEqual(e.exception.code,400);self.assertNotIn('prepare_sound',[name for name,args in self.calls])

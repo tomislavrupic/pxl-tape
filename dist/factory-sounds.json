@@ -163,5 +163,181 @@
       "delay": 0.09,
       "feedback": 0.15
     }
+  },
+  {
+    "id": "kick-circuit",
+    "name": "KICK / CIRCUIT",
+    "asset_id": 48589,
+    "source": "10A - Kick AdrenaLinn 1.wav",
+    "fingerprint": "1fc54a0fa0a539b04b25b63d7d32d824fbd394074159763f310520a21793c09f",
+    "duration": 0.4527210884353742,
+    "category": "drums",
+    "role": "kick",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "kick-backroom",
+    "name": "KICK / BACKROOM",
+    "asset_id": 48689,
+    "source": "10A - Kick BackWhen 2.wav",
+    "fingerprint": "b6f613816c3eca1634f3783381eedafb4a7aea8d387f48d9068e3ae990067cdc",
+    "duration": 0.6256009070294785,
+    "category": "drums",
+    "role": "kick",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "snare-berg",
+    "name": "SNARE / BERG",
+    "asset_id": 48456,
+    "source": "10A - Snare Berg 1.wav",
+    "fingerprint": "c3b905bdc4a0b4f8ef57f068cc821a01fee799a5f1cf57a06420a28fbcc624b9",
+    "duration": 0.34886621315192745,
+    "category": "drums",
+    "role": "snare",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "clap-copper",
+    "name": "CLAP / COPPER",
+    "asset_id": 48726,
+    "source": "10A - Clap Copper.wav",
+    "fingerprint": "bf926ce50de7e820eff907362f3a6268891de17ab5671b9989d8b964599d4365",
+    "duration": 0.39956916099773243,
+    "category": "drums",
+    "role": "clap",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "hat-closed",
+    "name": "HAT / CLOSED",
+    "asset_id": 48565,
+    "source": "10A - ClosedHH Berlin 2.wav",
+    "fingerprint": "1aedb166ee8ee6a6061adac02c6539505057aca00cf992762e1732dfeea157a0",
+    "duration": 0.25,
+    "category": "drums",
+    "role": "closed-hat",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "hat-open-dust",
+    "name": "HAT / OPEN DUST",
+    "asset_id": 48389,
+    "source": "10A - OpenHH BlackDust 1.wav",
+    "fingerprint": "c116ea737b472095d4ce85a17834bd34e6df77e13684ba20b913510209c3a388",
+    "duration": 0.549546485260771,
+    "category": "drums",
+    "role": "open-hat",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "cymbal-cinch",
+    "name": "CYMBAL / CINCH",
+    "asset_id": 54850,
+    "source": "11B - Cymbal Cinch 2.wav",
+    "fingerprint": "11092c1c288f0eebf0e73bae95e348270afc86d597d2f38f29416062c15bb194",
+    "duration": 0.731609977324263,
+    "category": "drums",
+    "role": "cymbal",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "perc-molecule",
+    "name": "PERC / MOLECULE",
+    "asset_id": 48708,
+    "source": "10A - Percussion Molecularis 4.wav",
+    "fingerprint": "5a35325234703f747f08a3f9b61608795ab9f7a289ac8f501d2cd953f89d9e49",
+    "duration": 0.75,
+    "category": "drums",
+    "role": "percussion",
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.72,
+      "release": 0.6,
+      "reverb": 0,
+      "delay": 0
+    }
   }
 ]

@@ -40,4 +40,4 @@ Interfaces: grouped device controls with page-specific macros; sequence page ban
 
 ### Task 4: Verify and release
 - [x] Run native and browser suites; fresh reviewer checks combined implementation and review focus.
-- [ ] Package versioned native binaries, update docs and hosted download, deploy Pages and verify public audio/assets.
+- [x] Package versioned native binaries, update docs and hosted download, deploy Pages and verify public audio/assets.

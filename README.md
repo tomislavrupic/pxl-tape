@@ -21,7 +21,7 @@ SAVE SOUND / OPEN SOUND exchange portable `.pxlsound` files with your sample whi
 
 No npm dependencies. `npm test` runs engine, native-project codec and worklet tests, including native PCM parity, corruption rejection and worklet output at 44.1/48/96 kHz. The native-generated fixture and native PCM oracle are committed so CI can test the prebuilt engine without a C++ toolchain.
 
-`python3 tools/build.py` rebuilds `dist/engine.wasm` with the official WASI SDK (`WASI_SDK_PATH`), regenerates the native oracle and records source/compiler hashes in `dist/engine-build.json`. The default SDK path points to the neighbouring PXL Dub toolchain. `npm run dev` serves `dist` on port 4175.
+`python3 tools/build.py` rebuilds `dist/engine.wasm` with the official WASI SDK (`WASI_SDK_PATH`), regenerates the native oracle and records source/WASM hashes in `dist/engine-build.json`. The default SDK path points to the neighbouring PXL Dub toolchain. `npm run dev` serves `dist` on port 4175.
 
 GitHub Actions tests the committed engine and deploys `dist` to GitHub Pages. Browser smoke checks covered audio initialization, demo playback, keys, drums, sequencer, mix page, recording, clear/undo, save and responsive themes. Native JUCE accepted a browser-written project. Native plugin installation, AU registration, hardware MIDI/microphone and cross-browser listening acceptance are separate checks.
 

@@ -1,0 +1,167 @@
+[
+  {
+    "id": "pocket-kalimba",
+    "name": "POCKET KALIMBA",
+    "asset_id": 43236,
+    "source": "4B - Kalimba Perky.wav",
+    "fingerprint": "5dbb01eea62fe561a44d2534dfe46bdbbff26467ed526b5df4cad0d18e7ea55c",
+    "duration": 0.7187074829931973,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.72,
+      "tone": 0.62,
+      "release": 0.35,
+      "reverb": 0.12,
+      "delay": 0.08
+    }
+  },
+  {
+    "id": "glass-relay",
+    "name": "GLASS RELAY",
+    "asset_id": 51872,
+    "source": "8A - Glass Kosmokrator.wav",
+    "fingerprint": "056cd453be087ae830d301eb130d8bbf33f79beee0fdc295e46a32bcaa638f14",
+    "duration": 0.9823809523809524,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 0,
+      "instGain": 0.65,
+      "tone": 0.75,
+      "release": 0.8,
+      "reverb": 0.2,
+      "delay": 0.14,
+      "feedback": 0.25
+    }
+  },
+  {
+    "id": "glass-shard",
+    "name": "GLASS SHARD",
+    "asset_id": 43234,
+    "source": "Glass Revolt.wav",
+    "fingerprint": "582367531fa0bdcdddc40e607b53dcd45afcbfeb767bba937e10609f8db98a8d",
+    "duration": 0.8010204081632653,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.7,
+      "tone": 0.8,
+      "release": 0.2,
+      "reverb": 0.06,
+      "delay": 0
+    }
+  },
+  {
+    "id": "spring-coil",
+    "name": "SPRING COIL",
+    "asset_id": 48437,
+    "source": "10A - Metal Spring 7.wav",
+    "fingerprint": "a72b0678db9436b2191ad107af85c9af65568c1097cc7c98f46bde6e6f1ff45a",
+    "duration": 0.96,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.7,
+      "tone": 0.65,
+      "release": 0.28,
+      "reverb": 0.06,
+      "delay": 0.16
+    }
+  },
+  {
+    "id": "tin-satellite",
+    "name": "TIN SATELLITE",
+    "asset_id": 44020,
+    "source": "12A - Metal Box.wav",
+    "fingerprint": "23ebc436722f16af342f5b3593f2d77eca932fc322550c2eb7da00d21038bf99",
+    "duration": 1.6582766439909298,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.7,
+      "tone": 0.4,
+      "shape": 0.6,
+      "release": 0.45,
+      "reverb": 0.16,
+      "delay": 0.08
+    }
+  },
+  {
+    "id": "wire-pluck",
+    "name": "WIRE PLUCK",
+    "asset_id": 48688,
+    "source": "10A - Pluck Arab 1.wav",
+    "fingerprint": "1e26b61f6910ba0aa05c591f423a5f084331d60e5219e2909d233379be7ab23d",
+    "duration": 1.7823809523809524,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 0,
+      "instGain": 0.7,
+      "tone": 0.65,
+      "release": 0.4,
+      "reverb": 0.12,
+      "delay": 0.18
+    }
+  },
+  {
+    "id": "vapor-sub",
+    "name": "VAPOR SUB",
+    "asset_id": 48714,
+    "source": "10A - Bass B VaporTrails.wav",
+    "fingerprint": "400e8fd961b88bb008d70f5e8fd5cc02bcfff4fdce9367ea8289533bfea51390",
+    "duration": 0.26503401360544215,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.9,
+      "tone": 0.26,
+      "shape": 0.45,
+      "release": 0.12,
+      "reverb": 0,
+      "delay": 0
+    }
+  },
+  {
+    "id": "dust-click",
+    "name": "DUST CLICK",
+    "asset_id": 53058,
+    "source": "11B - Click Vinilyzed.wav",
+    "fingerprint": "40b2c51f962e1658cbb3f70940b6bd4714968e0fb7d5e352bf16ffb4accabb94",
+    "duration": 0.5294331065759638,
+    "params": {
+      "sound": 4,
+      "attack": 0.001,
+      "sampleLoop": 0,
+      "sampleReverse": 0,
+      "playMode": 2,
+      "instGain": 0.75,
+      "tone": 0.65,
+      "shape": 0.2,
+      "release": 0.08,
+      "reverb": 0.04,
+      "delay": 0.09,
+      "feedback": 0.15
+    }
+  }
+]

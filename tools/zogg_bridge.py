@@ -46,7 +46,7 @@ class MCP:
        if 'error' in r:raise RuntimeError(str(r['error']))
        return r.get('result',{})
      raise RuntimeError('Zogg timed out. Check that your sample drives are connected.')
-    send('initialize',{'protocolVersion':'2024-11-05','capabilities':{},'clientInfo':{'name':'pxl-tape','version':'0.5.0'}});send('notifications/initialized',{},True)
+    send('initialize',{'protocolVersion':'2024-11-05','capabilities':{},'clientInfo':{'name':'pxl-tape','version':'0.6.0'}});send('notifications/initialized',{},True)
     result=send('tools/call',{'name':name,'arguments':args})
     for block in result.get('content',[]):
      if block.get('type')=='text':
@@ -69,7 +69,7 @@ def make_server(port,token,dist,output,call=None):
  class Handler(BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def respond(self,status,data,kind='application/json'):
-   body=json.dumps(data).encode() if kind=='application/json' else data
+   body=json.dumps(data).encode() if kind=='application/json' and not isinstance(data,(bytes,bytearray)) else data
    self.send_response(status);
    if getattr(self,'pairing',False):self.send_header('Set-Cookie',f'pxl-zogg={token}; HttpOnly; SameSite=Strict; Path=/')
    self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(body)));self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff');self.send_header('Referrer-Policy','no-referrer');self.end_headers();self.wfile.write(body)
@@ -114,12 +114,15 @@ def make_server(port,token,dist,output,call=None):
     if path not in ['/api/inspect','/api/preview','/api/prepare']:self.respond(404,{'error':'Not found'});return
     asset=number(data,'asset_id',0,1,2**53-1,True);details=self.server.call('get_sound',{'asset_id':asset})
     if not details.get('source',{}).get('available_and_unchanged'):raise ValueError('Source unavailable or changed. Refresh the Zogg catalogue and reconnect its drive.')
+    expected=data.get('expected_fingerprint')
+    if expected is not None and (not isinstance(expected,str) or len(expected)!=64 or any(c not in '0123456789abcdef' for c in expected) or expected!=details['source'].get('current_fingerprint')):raise ValueError('Factory source fingerprint differs. Current sound preserved; refresh your Zogg library.')
     public={'asset':details['asset']}
     if path=='/api/inspect':self.respond(200,public);return
     start=number(data,'start',0,0,86400);duration=number(data,'duration',10,.01,60 if path=='/api/preview' else 300)
     if start>=details['asset']['duration_seconds']:raise ValueError('Trim start is beyond the sound')
     args={'asset_id':asset,'duration_seconds':duration,'output_directory':str(output)}
     args['start_seconds' if path=='/api/preview' else 'trim_start_seconds']=start
+    if expected is not None and path=='/api/prepare':args['processing']={'fade_in_seconds':.0005,'fade_out_seconds':.006,'gain_db':-3}
     result=self.server.call('preview_sound' if path=='/api/preview' else 'prepare_sound',args)
     receipt=result['preview' if path=='/api/preview' else 'prepared'];file=Path(receipt['output_path']).resolve()
     if not file.is_relative_to(output) or not file.is_file() or file.suffix.lower()!='.wav' or file.stat().st_size>180*1024*1024:raise ValueError('Invalid Zogg audio output')

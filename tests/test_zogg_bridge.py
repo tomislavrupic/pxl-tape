@@ -7,7 +7,7 @@ class TestBridge(unittest.TestCase):
   def call(name,args):
    self.calls.append((name,args))
    if name=='search_sounds':return {'results':[],'total':0}
-   if name=='get_sound':return {'asset':{'id':7,'filename':'hit.wav','duration_seconds':1},'source':{'available_and_unchanged':True,'path':'private'}}
+   if name=='get_sound':return {'asset':{'id':7,'filename':'hit.wav','duration_seconds':1},'source':{'available_and_unchanged':True,'current_fingerprint':'a'*64,'path':'private'}}
    if name=='preview_sound':
     f=Path(self.tmp.name)/'preview.wav';f.write_bytes(b'RIFFtest');return {'preview':{'output_path':str(f)}}
    return {'libraries':[]}
@@ -25,6 +25,11 @@ class TestBridge(unittest.TestCase):
   self.assertEqual(json.load(self.request('/api/search',{'query':'kick','offset':25}))['total'],0)
   result=json.load(self.request('/api/preview',{'asset_id':7,'start':0,'duration':1}));self.assertNotIn('private',json.dumps(result));self.assertEqual(self.request(result['audio'],None).read(),b'RIFFtest')
   with self.assertRaises(urllib.error.HTTPError):self.request('/audio/../../etc/passwd',None)
+ def test_static_factory_catalogue(self):
+  with urllib.request.urlopen(self.url+'/factory-sounds.json?v=0.6.0') as response:self.assertEqual(len(json.load(response)),8)
+ def test_factory_identity_guard(self):
+  with self.assertRaises(urllib.error.HTTPError) as e:self.request('/api/prepare',{'asset_id':7,'duration':1,'expected_fingerprint':'b'*64})
+  self.assertEqual(e.exception.code,400);self.assertNotIn('prepare_sound',[name for name,args in self.calls])
  def test_local_window_cookie(self):
   with urllib.request.urlopen(self.url+'/') as response:
    self.assertIsNone(response.headers.get('Set-Cookie'));self.assertIn(b'data-zogg-local="true"',response.read())

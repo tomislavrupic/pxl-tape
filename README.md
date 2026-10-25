@@ -21,11 +21,17 @@ SAVE SOUND / OPEN SOUND exchange portable `.pxlsound` files with your sample whi
 
 ## Zogg sample browser
 
-Open SAMPLES or ZOGG SAMPLES from Tape/Sound. Download the Zogg bridge ZIP from that page, unzip, then open Start Zogg.command. Requires Python3.11+ and your existing configured Zogg MCP (Codex configuration, or ZOGG_MCP_COMMAND/ZOGG_MCP_ARGS). The launcher opens the connected localhost workstation; keep its Terminal window open. Native0.5 uses the same running bridge from its SAMPLES button. No changes to Zogg's app or original audio.
+Open SAMPLES or ZOGG SAMPLES from Tape/Sound. Download the Zogg bridge ZIP from that page, unzip, then open Start Zogg.command. Requires Python3.11+ and your existing configured Zogg MCP (Codex configuration, or ZOGG_MCP_COMMAND/ZOGG_MCP_ARGS). The launcher opens the connected localhost workstation; keep its Terminal window open. Native0.6 uses the same running bridge from its SAMPLES button. No changes to Zogg's app or original audio.
 
 Search filename/metadata, choose a mounted library and duration limit, sort and page through results. Select a row, set start/length, Preview to audition and inspect its waveform, then Load Sampler or choose a tape track and Load Tape. Sampler loads up to30seconds; tape loads up to300seconds per excerpt at its current playhead, overwriting only that region with Undo available. Loading stops transport. Native preview is excluded from tape and album recording; browser preview uses a separate audio element.
 
 The loopback bridge serves this same UI locally. Public Pages provides the connection/download page; it does not upload your catalogue or access drives directly. Pairing uses a per-run connection link and an HttpOnly SameSiteStrict cookie. Native discovery is a private mode600 Application Support/Pixel Records/PXL Tape/ZoggBridge.json. Only approved API calls and generated audio handles are served; no arbitrary source paths. A disconnected drive/source drift yields an error. Album browser storage is per-origin, so localhost and GitHub Pages album takes are separate; keep portable WAV/project copies when switching.
+
+## Factory Shorts
+
+Sound Presets includes8 Zogg factory patches using sources under2seconds: Pocket Kalimba, Glass Relay, Glass Shard, Spring Coil, Tin Satellite, Wire Pluck, Vapor Sub and Dust Click. They require the connected local workstation and matching Zogg sources. Source fingerprints are checked before preparing/loading; sound-specific settings reset consistently while tape, mixer and sequence are preserved. Raw sample audio is not included in public downloads. Save the loaded sound or project to keep a private portable copy.
+
+Factory metadata in dist/factory-sounds.json is shared with native through tools/generate_factory.py and Source/FactoryManifest.h. The user's prepared .pxlsound files and eight-slot bank remain outside this repository.
 
 ## Development
 

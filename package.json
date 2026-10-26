@@ -1,1 +1,1 @@
-{"name":"pxl-tape-web","version":"0.7.1","private":true,"type":"module","scripts":{"build":"python3 tools/build.py","test":"node --test tests/*.test.mjs","dev":"python3 -m http.server 4175 --directory dist"}}
+{"name":"pxl-tape-web","version":"0.8.0","private":true,"type":"module","scripts":{"build":"python3 tools/build.py","test":"node --test tests/*.test.mjs","dev":"python3 -m http.server 4175 --directory dist"}}

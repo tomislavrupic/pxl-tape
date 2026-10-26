@@ -1,5 +1,5 @@
-import {fetchFactorySound} from './factory.js?v=0.7.0';
-import {resampleAudio} from './project.js?v=0.7.0';
+import {fetchFactorySound} from './factory.js?v=0.8.0';
+import {resampleAudio} from './project.js?v=0.8.0';
 export const KIT_IDS=['kick-circuit','snare-berg','hat-closed','clap-copper','kick-backroom','perc-molecule','hat-open-dust','cymbal-cinch'];
 export const KIT_LABELS=['CIRCUIT KICK','BERG SNARE','CLOSED HAT','COPPER CLAP','BACKROOM KICK','MOLECULE PERC','OPEN HAT','CINCH CYMBAL'];
 export function packDrumKit(patches,rate){

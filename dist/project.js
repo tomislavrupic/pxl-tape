@@ -1,4 +1,4 @@
-import {DEVICE_PARAMS}from'./device-parameters.js?v=0.7.0';
+import {DEVICE_PARAMS}from'./device-parameters.js?v=0.8.0';
 export const PARAMS=[
  ['sound','Engine',0,12,0],['tone','Tone',0,1,.5],['shape','Shape',0,1,.35],['attack','Attack',.001,2,.006],['release','Release',.02,5,.4],['instGain','Instrument',0,1,.65],['drumGain','Drums',0,1,.7],['tempo','Tempo',40,240,120],['speed','Tape speed',-2,2,1],['swing','Swing',0,.5,0],['drive','Drive',0,1,0],['delay','Echo',0,1,.12],['feedback','Feedback',0,.85,.3],['reverb','Space',0,1,.12],['master','Master',0,1,.8],['monitor','Monitor',0,1,1],['sequence','Melody',0,1,0],['drumSequence','Drum sequence',0,1,0],['hostSync','Host sync',0,1,0],['scale','Scale',0,2,0],['root','Root',0,11,0],
  ...Array.from({length:4},(_,i)=>[[`gain${i+1}`,`Track ${i+1} level`,0,1.5,.8],[`pan${i+1}`,`Track ${i+1} pan`,-1,1,0],[`mute${i+1}`,`Track ${i+1} mute`,0,1,0],[`solo${i+1}`,`Track ${i+1} solo`,0,1,0]]).flat(),...DEVICE_PARAMS

@@ -1,3 +1,4 @@
+#include "Demo.h"
 #include "TapeEngine.h"
 #include "AlbumCapture.h"
 #include <cstring>
@@ -50,7 +51,7 @@ int tape_action(int action){
  case 4:e.copy(e.armed);break;case 5:e.cut(e.armed);break;case 6:e.paste(e.armed);break;case 7:e.reverseSelection(e.armed);break;case 8:e.clear(e.armed);break;case 9:return e.undo()?1:0;case 10:e.bounce();break;
  case 11:{if(e.recording)return 0;auto s=e.selection();if(s.second-s.first>e.rate*30)return 0;e.panic();for(int c=0;c<2;c++){e.sample[c].resize(size_t(s.second-s.first));for(int i=s.first;i<s.second;i++)e.sample[c][size_t(i-s.first)]=e.readTape(e.armed,c,i);}e.sound=4;break;}
  case 12:e.playing=e.recording=false;e.clearAll();e.clearUndo();break;
- case 13:{for(int n:e.used)if(n>0)return 0;int n=std::min(e.capacity,int(e.rate*16));e.loopEnd=n;for(int t=0;t<4;t++)e.reserveTrack(t,n);for(int i=0;i<n;i++){double t=i/e.rate,beat=std::fmod(t,.5),bar=std::fmod(t,2.);int step=int(t/2)%4;int notes[]={48,55,57,53};double freq=440*std::pow(2.,(notes[step]-69)/12.);float kick=float(std::sin(2*pxl::pi*(48*beat+2*(1-std::exp(-30*beat))))*std::exp(-beat*22))*.48f;float bass=float(std::sin(2*pxl::pi*freq*t)*(.4+.6*std::exp(-beat*5)))*.3f;float pad=float((std::sin(2*pxl::pi*freq*2*t)+std::sin(2*pxl::pi*freq*2.5*t))*.075*(.5+.5*std::sin(pxl::pi*bar/2)));float hat=float(std::sin(t*17313)*std::sin(t*12371)*std::exp(-std::fmod(t,.25)*90))*.12f;float values[]={kick,bass,pad,hat};for(int tr=0;tr<4;tr++){e.tape[tr][0][i]=values[tr];e.tape[tr][1][i]=values[tr]*(tr==2?.8f:1.f);}}e.used.fill(n);e.rewind();break;}
+ case 13:return pxl::loadDemo(e)?1:0;
  case 14:e.panic();break;case 15:e.playing=e.recording=false;e.allNotesOff();break;case 16:e.clearUndo();break;default:return 0;}
  return 1;
 }

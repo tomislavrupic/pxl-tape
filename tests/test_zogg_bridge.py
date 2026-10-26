@@ -32,11 +32,14 @@ class TestBridge(unittest.TestCase):
   self.assertEqual(e.exception.code,400);self.assertNotIn('prepare_sound',[name for name,args in self.calls])
  def test_local_window_cookie(self):
   with urllib.request.urlopen(self.url+'/') as response:
-   self.assertIsNone(response.headers.get('Set-Cookie'));self.assertIn(b'data-zogg-local="true"',response.read())
+   self.assertIsNone(response.headers.get('Set-Cookie'));body=response.read();self.assertIn(b'data-zogg-local="true"',body);self.assertIn(b'id="play"',body)
   with self.request('/api/pair') as response:
    cookie=response.headers['Set-Cookie'];self.assertIn('HttpOnly',cookie);self.assertIn('SameSite=Strict',cookie)
   with self.request('/api/status',headers={'Authorization':'','Cookie':cookie.split(';')[0]}) as response:self.assertEqual(response.status,200)
   with self.assertRaises(urllib.error.HTTPError):self.request('/api/pair',headers={'Authorization':''})
+ def test_direct_play_is_connected(self):
+  with urllib.request.urlopen(self.url+'/play.html') as response:
+   body=response.read();self.assertIn(b'data-zogg-local="true"',body);self.assertIn(b'id="play"',body)
  def test_error_is_reported(self):
   self.server.call=lambda n,a:(_ for _ in ()).throw(RuntimeError('SOURCE_CHANGED'))
   with self.assertRaises(urllib.error.HTTPError) as e:self.request('/api/status')

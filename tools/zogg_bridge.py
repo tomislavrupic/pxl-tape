@@ -88,10 +88,10 @@ def make_server(port,token,dist,output,call=None):
     file=self.server.files.get(path)
     if file is None or not file.is_file():self.respond(404,{'error':'Preview expired. Preview the sound again.'});return
     self.respond(200,file.read_bytes(),'audio/wav');return
-   file=(dist/unquote(path).lstrip('/')).resolve() if path!='/' else dist/'index.html'
-   if not file.is_relative_to(dist) or not file.is_file() or file.suffix not in {'.html','.js','.css','.wasm','.svg','.json','.zip'}:self.respond(404,{'error':'Not found'});return
+   file=(dist/unquote(path).lstrip('/')).resolve() if path!='/' else dist/'play.html'
+   if not file.is_relative_to(dist) or not file.is_file() or file.suffix not in {'.html','.js','.css','.wasm','.svg','.json','.zip','.png','.sha256'}:self.respond(404,{'error':'Not found'});return
    body=file.read_bytes()
-   if file.name=='index.html':body=body.replace(b'<html ',b'<html data-zogg-local="true" ',1)
+   if file.name=='play.html':body=body.replace(b'<html ',b'<html data-zogg-local="true" ',1)
    self.respond(200,body,mimetypes.guess_type(str(file))[0] or 'application/octet-stream')
   def do_POST(self):
    if not self.allowed(True):return

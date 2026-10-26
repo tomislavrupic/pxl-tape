@@ -52,3 +52,9 @@ Eight more local Zogg one-shot sampler presets: Kick / Circuit, Kick / Backroom,
 On DRUMS, choose LOAD ZOGG KIT. The eight curated drum recordings load together with fingerprint validation before replacing the kit. Pad order: Circuit Kick, Berg Snare, Closed Hat, Copper Clap, Backroom Kick, Molecule Percussion, Open Hat, Cinch Cymbal. MIDI channel10 notes36–43 use the same order. Closed Hat chokes Open Hat. All eight pads have sequencer lanes across the existing eight banks. Enable DRUMS on SEQUENCE and Play; Record prints to the armed tape track.
 
 The kit has independent stereo sample memory, so changing or recalling a melodic sound leaves the kit and drum settings intact. Loading a kit preserves melody timing/held notes, tape, transport and patterns. Existing D-BOX synth and melodic sample slices remain selectable. Save the project to embed the kit for offline recall. New projects use format3 and need PXL Tape0.7 or newer; formats1/2 still load with an empty kit and four extra empty drum lanes. Public downloads contain metadata only; initial factory loading requires the local Zogg bridge.
+
+## Public page and AU download
+
+The GitHub Pages root is the landing page; play.html opens the full workstation. The local Zogg helper keeps opening the connected workstation at its root, and direct play.html also receives local connection marking. Both entry paths use the Safari playback-session fix before AudioContext startup/resume. No account or download is needed for synths, synthesized drums or the owned Demo.
+
+Dedicated Apple Silicon AU archive: downloads/PXL-Tape-0.7.0-AU-Apple-Silicon.zip. AU factory/instance/stereo MIDI render and all eight native CTest targets passed outside sandbox. Ad-hoc signing passes; no Developer ID identities are available, so the build remains unnotarized and may be blocked by some systems. Installation instructions and native source are included.

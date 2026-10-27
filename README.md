@@ -58,3 +58,9 @@ The kit has independent stereo sample memory, so changing or recalling a melodic
 The GitHub Pages root is the landing page; play.html opens the full workstation. The local Zogg helper keeps opening the connected workstation at its root, and direct play.html also receives local connection marking. Both entry paths use the Safari playback-session fix before AudioContext startup/resume. No account or download is needed for synths, synthesized drums or the owned Demo.
 
 Dedicated Apple Silicon AU archive: downloads/PXL-Tape-0.7.0-AU-Apple-Silicon.zip. AU factory/instance/stereo MIDI render and all eight native CTest targets passed outside sandbox. Ad-hoc signing passes; no Developer ID identities are available, so the build remains unnotarized and may be blocked by some systems. Installation instructions and native source are included.
+
+## Notarized Mac plugin release — 27 October 2026
+
+AU/VST3 download: https://github.com/tomislavrupic/pxl-tape/releases/download/notarized-2026-10-27/PXL-Tape-0.8.0-macOS-arm64-Notarized-2026-10-27.zip
+
+This release contains the signed, Apple-notarized plugin bundles with stapled tickets. Standalone apps are not part of this Mac plugin ZIP. Save your session, back up previous copies, install whole bundles and restart/rescan your DAW. Existing Windows downloads and artwork remain available.
